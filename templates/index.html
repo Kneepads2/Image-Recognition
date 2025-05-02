@@ -6,10 +6,72 @@
         <title>Image Recognition</title>
         <link rel="icon" type="image/x-icon" href="https://weather-bucket-mine.s3.us-east-1.amazonaws.com/images/weather.png">
         <style>
+            * {
+                box-sizing: border-box;
+            }
 
+            header {
+                display: flex;
+                width: 100%;
+                height: auto;
+                padding: 10px;
+                background-color: black;
+                color: white;
+                text-align: center;
+                justify-content: center;
+                font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+            }
+
+            .sector {
+                margin: 30px 0px;
+                color: black;
+                display: flex;
+                text-align: center;
+                font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+                justify-content: center;
+                height: auto;
+            }
+
+            .center-content {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: auto;    
+                flex-direction: column;
+            }
+
+            .inputs {
+                margin: 10px 0px;
+                color: black;
+                text-align: center;
+                justify-content: center;
+                display: inline-block;
+            }
         </style>
     </head>
     <body>
-
+        <header>
+            <h1>Image Recognition</h1>
+        </header>
+        <div class="sector">
+            <div>
+                <form class="center-content">
+                    <div class="inputs">
+                        <label>Topic: </label>
+                        <input type="text"/>
+                    </div>
+                    <div>
+                        <label>Image:</label>
+                        <input type="file" accept="image/png, image/jpeg, image/jpg"/>
+                    </div>
+                </form>
+                <div>
+                    <p>Requested Label: </p>
+                    <p>Predicted Label: </p>
+                    <p>Accuracy: </p>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
