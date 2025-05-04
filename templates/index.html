@@ -1,77 +1,117 @@
 <!DOCTYPE html>
-<html>
-    <head lang="en">
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Image Recognition</title>
-        <link rel="icon" type="image/x-icon" href="https://weather-bucket-mine.s3.us-east-1.amazonaws.com/images/weather.png">
-        <style>
-            * {
-                box-sizing: border-box;
-            }
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Image Recognition</title>
+    <link rel="icon" type="image/x-icon" href="https://weather-bucket-mine.s3.us-east-1.amazonaws.com/images/weather.png">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-            header {
-                display: flex;
-                width: 100%;
-                height: auto;
-                padding: 10px;
-                background-color: black;
-                color: white;
-                text-align: center;
-                justify-content: center;
-                font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        body {
+            margin: 0;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-            }
+        header {
+            width: 100%;
+            background-color: black;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
 
-            .sector {
-                margin: 30px 0px;
-                color: black;
-                display: flex;
-                text-align: center;
-                font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-                justify-content: center;
-                height: auto;
-            }
+        .sector {
+            margin-top: 40px;
+            width: 100%;
+            max-width: 600px;
+            background-color: white;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+        }
 
-            .center-content {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: auto;    
-                flex-direction: column;
-            }
+        form.center-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
 
-            .inputs {
-                margin: 10px 0px;
-                color: black;
-                text-align: center;
-                justify-content: center;
-                display: inline-block;
-            }
-        </style>
-    </head>
-    <body>
-        <header>
-            <h1>Image Recognition</h1>
-        </header>
-        <div class="sector">
-            <div>
-                <form class="center-content">
-                    <div class="inputs">
-                        <label>Topic: </label>
-                        <input type="text"/>
-                    </div>
-                    <div>
-                        <label>Image:</label>
-                        <input type="file" accept="image/png, image/jpeg, image/jpg"/>
-                    </div>
-                </form>
-                <div>
-                    <p>Requested Label: </p>
-                    <p>Predicted Label: </p>
-                    <p>Accuracy: </p>
-                </div>
+        .inputs {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="file"] {
+            padding: 8px;
+            width: 100%;
+            max-width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .results p {
+            margin: 8px 0;
+            font-size: 16px;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Image Recognition</h1>
+    </header>
+    <div class="sector">
+        <form class="center-content" method="POST" enctype="multipart/form-data">
+            <div class="inputs">
+                <label for="label">Label:</label>
+                <input type="text" id="label" name="label" required />
+                {% if error %}
+                    <p class="error">{{ error }}</p>
+                {% endif %}
             </div>
+            <div class="inputs">
+                <label for="image">Image:</label>
+                <input type="file" id="image" name="image" accept="image/*" required />
+                <img style="margin: 20px; max-width: 100px; max-height: 100px;" id="submitted_image" src="#" alt="your image" />
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+
+        <div class="results">
+            {% if prediction %}
+                <p><strong>Requested Label:</strong> {{ prediction.requested }}</p>
+                <p><strong>Predicted Label:</strong> {{ prediction.predicted }}</p>
+                <p><strong>Match:</strong> {{ prediction.match }}</p>
+            {% endif %}
         </div>
-    </body>
+    </div>
+</body>
+<script>
+    image.onchange = evt => {
+        const [file] = image.files
+        if (file) {
+            submitted_image.src = URL.createObjectURL(file)
+        }
+    }
+</script>
 </html>
